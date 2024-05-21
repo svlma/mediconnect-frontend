@@ -5,28 +5,26 @@ import { BASE_URL } from "./../../config";
 import { toast } from "react-toastify";
 import { AuthContext } from "./../../context/AuthContext";
 const Profile = ({ doctorData }) => {
-  const { token } = useContext(AuthContext);
+  const { user, token, dispatch } = useContext(AuthContext);
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    phone: "",
-    bio: "",
-    gender: "",
-    specialization: "",
-    ticketPrice: 0,
-    qualifications: [],
-    experiences: [],
-    timeSlots: [],
-    about: "",
-    photo: null,
+    name: user?.name || "",
+    email: user?.email || "",
+    phone: user?.phone || "",
+    bio: user?.bio || "",
+    gender: user?.gender || "",
+    specialization: user?.specialization || "",
+    ticketPrice: user?.ticketPrice || 0,
+    qualifications: user?.qualifications || [],
+    experiences: user?.experiences || [],
+    timeSlots: user?.timeSlots || [],
+    about: user?.about || "",
+    photo: user?.photo || null,
   });
 
   useEffect(() => {
     setFormData({
       name: doctorData?.name || "",
       email: doctorData?.email || "",
-      password: "",
       phone: doctorData?.phone || "",
       bio: doctorData?.bio || "",
       gender: doctorData?.gender || "",
@@ -46,7 +44,6 @@ const Profile = ({ doctorData }) => {
   const handleFileInputChange = async (event) => {
     const file = event.target.files[0];
     const data = await uploadImagetoCloudinary(file);
-    console.log(data);
     setFormData({ ...formData, photo: data?.url });
   };
   const updateProfileHandler = async (e) => {
@@ -68,9 +65,15 @@ const Profile = ({ doctorData }) => {
         throw Error("Something went wrong");
       }
 
+      dispatch({
+        type: "UPDATE_USER",
+        payload: {
+          user: result.data
+        },
+      });
+
       toast.success(result.message);
     } catch (error) {
-      console.log(error);
       toast.error(error.message);
     }
   };
@@ -179,7 +182,7 @@ const Profile = ({ doctorData }) => {
             className="form__input"
             readOnly
             aria-readonly
-            disabled="true"
+            disabled
           />
         </div>
         <div className="mb-5">

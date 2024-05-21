@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import avatar from "../../assets/images/avatar-icon.png";
 import { formatDate } from "../../../utils/formateDate";
 import { AiFillStar } from "react-icons/ai";
 import FeedbackForm from "./FeedbackForm";
 
 const Feedback = ({ reviews, totalRating }) => {
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
+
   return (
     <div>
       <div className="mb-[50px]">
@@ -18,7 +18,6 @@ const Feedback = ({ reviews, totalRating }) => {
             <div className="flex gap-3">
               <figure className="w-10 h-10 rounded-full">
                 <img className="w-full" src={review?.user?.photo} alt="" />
-                {/* {console.log(user.$(review?._id))} */}
               </figure>
               <div>
                 <h5 className="text-[16px] leading-6 text-primaryColor font-bold">
@@ -49,7 +48,7 @@ const Feedback = ({ reviews, totalRating }) => {
         </div>
       )}
 
-      {showFeedbackForm && <FeedbackForm />}
+      {showFeedbackForm && <FeedbackForm onReviewSubmitted={() => setShowFeedbackForm(false)} />}
     </div>
   );
 };
