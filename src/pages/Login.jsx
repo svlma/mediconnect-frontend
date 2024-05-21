@@ -44,7 +44,6 @@ const Login = () => {
           role: result.data.role,
         },
       });
-      console.log(result, "login data");
 
       setLoading(false);
       toast.success(result.message);
@@ -83,6 +82,7 @@ const Login = () => {
               placeholder="Enter your password"
               name="password"
               value={formData.password}
+              autoComplete="current-password"
               onChange={handleInputChange}
               className="w-full px-4 py-3 border-b border-solid border-[#0066ff61] focus:outline-none
               focus:border-b-primaryColor text-[22px] leading-7 text-headingColor

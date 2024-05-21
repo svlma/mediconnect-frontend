@@ -4,7 +4,8 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import HashLoader from "react-spinners/HashLoader";
 import { BASE_URL } from "../../config";
-const FeedbackForm = () => {
+import { AuthContext } from "../../context/AuthContext";
+const FeedbackForm = ({onReviewSubmitted}) => {
   const { token } = useContext(AuthContext);
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
@@ -39,6 +40,7 @@ const FeedbackForm = () => {
 
       setLoading(false);
       toast.success(result.message);
+      onReviewSubmitted();
     } catch (err) {
       setLoading(false);
       toast.error(err.message);

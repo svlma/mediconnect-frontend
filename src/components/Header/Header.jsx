@@ -49,7 +49,7 @@ const Header = () => {
   }, []);
 
   const toggleMenu = () => menuRef.current.classList.toggle("show__menu");
-  console.log(user?.role);
+  
   return (
     <header className="header flex items-center" ref={headerRef}>
       <div className="container">

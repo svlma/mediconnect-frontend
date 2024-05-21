@@ -24,8 +24,8 @@ const Appointments = ({ appointments }) => {
       </thead>
 
       <tbody>
-        {appointments?.map((item) => (
-          <tr key={item._id}>
+        {appointments?.map((item, index) => (
+          <tr key={index}>
             <th
               scope="row"
               className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap"
