@@ -1,6 +1,5 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "./../../context/AuthContext";
-
 import MyBookings from "./MyBookings";
 import Profile from "./Profile";
 import useGetProfile from "../../hooks/useFetchData";
@@ -9,24 +8,23 @@ import Loading from "../../components/Loader/Loading";
 import Error from "../../components/Error/Error";
 
 const MyAccount = () => {
-  const { dispatch } = useContext(AuthContext);
+  const { user, dispatch } = useContext(AuthContext);
   const [tab, setTab] = useState("bookings");
-  const {
-    data: userData,
-    loading,
-    error,
-  } = useGetProfile(`${BASE_URL}/users/profile/me`);
-  console.log(userData, "userdata");
+  const [userData, setUserData] = useState(user);
+
+  useEffect(() => {
+    setUserData(user);
+  }, [user]);
+
   const handleLogout = () => {
     dispatch({ type: "LOGOUT" });
   };
+
   return (
     <section>
       <div className="max-w-[1170px] px-5 mx-auto">
-        {loading && !error && <Loading />}
-        {error && !loading && <Error errMessage={error} />}
-
-        {!loading && !error && (
+        {!userData && <Loading />}
+        {userData && (
           <div className="grid md:grid-cols-3 gap-10">
             <div className="pb-[50px] px-[30px] rounded-md">
               <div className="flex items-center justify-center">
@@ -86,7 +84,7 @@ const MyAccount = () => {
                 </button>
               </div>
               {tab === "bookings" && <MyBookings />}
-              {tab === "settings" && <Profile user={userData} />}
+              {tab === "settings" && <Profile />}
             </div>
           </div>
         )}

@@ -6,11 +6,9 @@ import { BASE_URL } from "../../config";
 import { toast } from "react-toastify";
 import HashLoader from "react-spinners/HashLoader";
 
-const Profile = ({ user }) => {
-  const { token } = useContext(AuthContext);
+const Profile = () => {
+  const { user, token, dispatch } = useContext(AuthContext);
   const [selectedFile, setSelectedFile] = useState(null);
-
-  const [key, setKey] = useState(Date.now());
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -32,22 +30,15 @@ const Profile = ({ user }) => {
     });
   }, [user]);
 
-  useEffect(() => {
-    // Resets the key on each component mount to force reload the GIF
-    setKey(Date.now());
-  }, []);
-
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleFileInputChange = async (e) => {
+  const handleFileInputChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const data = await uploadImageToCloudinary(file);
-
-      setSelectedFile(data.url);
-      setFormData({ ...formData, photo: data.url });
+      setSelectedFile(file);
+      setFormData({ ...formData, photo: URL.createObjectURL(file) });
     }
   };
 
@@ -55,27 +46,43 @@ const Profile = ({ user }) => {
     e.preventDefault();
     setLoading(true);
     try {
+      let uploadedImageUrl = formData.photo;
+      if (selectedFile) {
+        const data = await uploadImageToCloudinary(selectedFile);
+        uploadedImageUrl = data.url;
+      }
+
+      const updatedFormData = { ...formData, photo: uploadedImageUrl };
+
       const res = await fetch(`${BASE_URL}/users/${user._id}`, {
-        method: "put",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(updatedFormData),
       });
-      const { message } = await res.json();
+      const result = await res.json();
       if (!res.ok) {
-        throw new Error(message);
+        throw new Error(result.message);
       }
 
+      dispatch({
+        type: "UPDATE_USER",
+        payload: {
+          user: result.data,
+        },
+      });
+
       setLoading(false);
-      toast.success(message);
+      toast.success(result.message);
       navigate("/users/profile/me");
     } catch (error) {
       toast.error(error.message);
       setLoading(false);
     }
   };
+
   return (
     <div className="mt-10">
       <form onSubmit={submitHandler}>
@@ -145,7 +152,7 @@ const Profile = ({ user }) => {
             <figure className="w-[60px] h-[60px] rounded-full border-2 border-solid border-primaryColor flex items-center justify-center">
               <img
                 src={formData.photo}
-                alt=""
+                alt="Profile"
                 className="w-full rounded-full"
               />
             </figure>

@@ -1,30 +1,27 @@
 import { Link } from "react-router-dom";
+import { FaCheck } from "react-icons/fa";
 
 const CheckoutSuccess = () => {
   return (
-    <div className="bg-gray-100 h-screen">
-      <div className="bg-white p-6 md:mx-auto">
-        <svg
-          viewBox="0 0 24 24"
-          className="text-green-600 w-16 h-16 mx-auto my-6"
-        >
-          <path
-            fill="currentColor"
-            d="M12,0A12,12,0,1,0,24,12,12.014,12.014,0,0,0,12,0Zm6.927,8.2-6.845,9.2891.011,1.011,0,0,1-1.43.188L5.764,13.769a1,1,0,1,1,1.25-1.562l3.261,6.227,8.451-8.451A1,1,0,1,1,18.927,8.22"
-          />
-        </svg>
+    <div className="bg-gray-100 flex items-center justify-center py-10 ">
+      <div className="bg-white p-6 md:w-2/3 lg:w-1/2 rounded-lg shadow-lg">
+        <div className="flex justify-center my-6">
+          <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center">
+            <FaCheck color="white" size={20} />
+          </div>
+        </div>
         <div className="text-center">
-          <h3 className="md:text-2xl text-base text-gray-900 font-semibold text-center">
+          <h3 className="md:text-2xl text-xl text-gray-900 font-semibold">
             Payment Done!
           </h3>
           <p className="text-gray-600 my-2">
-            Thank you for completing your secure online payment.
+            Thank you for completing your online payment.
           </p>
-          <p>Have a great day!</p>
+          <p className="text-gray-600">Have a great day!</p>
           <div className="py-10 text-center">
             <Link
               to="/home"
-              className="px-12 bg-buttonBgColor text-white font-semibold py-3"
+              className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700"
             >
               Go Back To Home
             </Link>

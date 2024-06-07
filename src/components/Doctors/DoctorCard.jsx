@@ -1,55 +1,93 @@
-// eslint-disable-next-line react/prop-types
 import React from "react";
-import starIcon from "../../assets/images/Star.png";
 import { Link } from "react-router-dom";
 import { BsArrowRight } from "react-icons/bs";
+import { VscChevronDown } from "react-icons/vsc";
+import {
+  Box,
+  Image,
+  Heading,
+  Text,
+  Badge,
+  Button,
+  Flex,
+  IconButton,
+} from "@chakra-ui/react";
+import starIcon from "../../assets/images/Star.png";
 
 const DoctorCard = ({ doctor }) => {
   const { name, avgRating, totalRating, photo, specialization, experiences } =
-    doctor; // Added totalPatients and hospital
+    doctor;
 
   return (
-    <div className="p-3 lg:p-5">
-      <div>
-        <img src={photo} className="w-full" alt="" />
-      </div>
+    <Box
+      borderWidth="1px"
+      className="shadow-lg"
+      borderRadius="10px"
+      paddingTop={17}
+      paddingLeft={17}
+      paddingBottom={13}
+      paddingRight={17}
+      width="100%"
+      overflow="hidden"
+      _hover={{
+        transform: "scale(1.03)",
+        transition: "trandform .15s ease-in ",
+      }}
+    >
+      <Link to={`/doctors/${doctor._id}`}>
+        <Image src={photo} alt={name} borderRadius="20px" mb={4} padding={7} />
+      </Link>
 
-      <h2 className="text-[18px] leading-[30px] lg:text-[26px] lg:leading-[9] text-headingColor font-[700] mt-3 lg:mt-5">
+      <Heading fontSize="md" padding={4} textAlign="center" fontWeight="bold">
         {name}
-      </h2>
+      </Heading>
 
-      <div className="mt-2 lg:mt-4 flex items-center justify-between">
-        <span className="bg-[#CCF0F3] text-irisBlueColor py-1 px-2 lg:py-2 lg:px-6 text-[12px] leading-[4] lg:text-[16px] lg:leading-[7] font-semibold rounded">
-          {specialization}
-        </span>
-
-        <div className="flex items-center gap-[6px]">
-          <span className="flex items-center gap-[6px] text-[14px] leading-6 lg:text-[16px] lg:leading-7 font-semibold text-headingColor">
-            <img src={starIcon} alt="star icon" /> {avgRating}
-          </span>
-          <span className="text-[14px] leading-6 lg:text-[16px] lg:leading-7 font-[400] text-textColor">
-            ({totalRating})
-          </span>
-        </div>
-      </div>
-
-      <div className="mt-[18px] lg:mt-5 flex items-center justify-between">
-        <div>
-          {/* <h3 className="text-[16px] leading-7 lg:text-[18px] lg:leading-[30px] font-semibold text-headingColor">
-            +{totalPatients} patients 
-          </h3> */}
-          <p className="text-[14px] leading-6 font-[400] text-textColor">
-            At {experiences && experiences[0]?.hospital}
-          </p>
-        </div>
-        <Link
-          to={`/doctors/${doctor._id}`}
-          className="w-[44px] h-[44px] rounded-full border border-solid border-[#181A1E] flex items-center justify-center group hover:bg-primaryColor hover:border-none"
+      <Flex align="center" justify="space-between" mb={4} padding={5}>
+        <Badge
+          // ml="1"
+          fontSize="0.8em"
+          variant="outline"
+          bgColor="#136cfb"
+          padding={8}
+          color="white"
+          borderRadius={5}
+          border="4px"
+          borderColor="#136cfb"
+          fontWeight="bold"
         >
-          <BsArrowRight className="group-hover:text-white w-6 h-5" />
+          {specialization}
+        </Badge>
+
+        <Flex align="center" gap={2}>
+          <Image src={starIcon} alt="star icon" w={20} h={20} />
+          <Text ml={1} fontWeight="bold" color="gray.700">
+            {avgRating}
+          </Text>
+          {totalRating && (
+            <Text ml={1} fontSize="sm" color="gray.600">
+              ({totalRating})
+            </Text>
+          )}
+        </Flex>
+      </Flex>
+
+      <Flex align="center" justify="space-between">
+        <Text fontSize="sm" color="gray.600">
+          {experiences && experiences[0]?.hospital}
+        </Text>
+        <Link to={`/doctors/${doctor._id}`}>
+          <IconButton
+            padding={8}
+            aria-label="View Doctor"
+            icon={<VscChevronDown />}
+            colorScheme="blue"
+            variant="outline"
+            borderRadius="full"
+            _hover={{ bg: "blue.500", color: "blue" }}
+          />
         </Link>
-      </div>
-    </div>
+      </Flex>
+    </Box>
   );
 };
 

@@ -13,11 +13,11 @@ const DoctorAbout = ({ name, about, qualifications, experiences }) => {
         <p className="text__para">{about}</p>
       </div>
 
-      <div className="mt-12">
+      <div className="mt-3">
         <h3 className="text-[20px] leading-[30px] text-headingColor font-semibold">
           Education
         </h3>
-        <ul className="pt-4 md:p-5">
+        <ul className="pt-4 ">
           {qualifications?.map((item, index) => (
             <li
               key={index}
@@ -38,7 +38,7 @@ const DoctorAbout = ({ name, about, qualifications, experiences }) => {
           ))}
         </ul>
       </div>
-      <div className="mt-12">
+      <div className="mt-3">
         <h3 className="text-[20px] leading-[30px] text-headingColor font-semibold">
           Experience
         </h3>

@@ -1,10 +1,17 @@
-import convertTime from "../../../utils/convertTime";
+import React, { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { useContext } from "react";
 import { BASE_URL } from "./../../config";
 import { toast } from "react-toastify";
 import { AuthContext } from "./../../context/AuthContext";
+import convertTime from "../../../utils/convertTime";
+
 const SidePanel = ({ doctorId, ticketPrice, timeSlots }) => {
   const { token } = useContext(AuthContext);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedTime, setSelectedTime] = useState("");
+
   const bookingHandler = async () => {
     try {
       const res = await fetch(
@@ -15,6 +22,10 @@ const SidePanel = ({ doctorId, ticketPrice, timeSlots }) => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
+          body: JSON.stringify({
+            appointmentDate: selectedDate,
+            appointmentTime: selectedTime,
+          }),
         }
       );
       const data = await res.json();
@@ -30,34 +41,35 @@ const SidePanel = ({ doctorId, ticketPrice, timeSlots }) => {
   };
 
   return (
-    <div className="shadow-panelShadow p-3 lg:p-5 rounded-md ">
-      <div className="flex items-center justify-between ">
-        <p className="text_para mt-0 font-semibold  ">Consultation Price </p>
+    <div className="shadow-panelShadow p-5 lg:p-5 rounded-md">
+      <div className="flex items-center justify-between">
+        <p className="text_para mt-0 font-semibold">Consultation Price</p>
         <span className="text-[16px] leading-7 lg:text-[22px] lg:leading-8 text-headingColor font-bold ">
           {ticketPrice} DH
         </span>
       </div>
 
-      <div className="mt-[30px]  ">
-        <p className="text__para mt-0 font-semibold  text-headingColor ">
-          Available time slots:
+      <div className="mt-[30px]">
+        <p className="text__para mt-0 font-semibold text-headingColor">
+          Available Time Slots:
         </p>
         <ul className="mt-3">
           {timeSlots?.map((item, index) => (
-            <li key={index} className="flex items-center justify-between mb-2 ">
+            <li key={index} className="flex items-center justify-between mb-2">
               <p className="text-[15px] leading-6 text-textColor font-semibold">
                 {item.day.charAt(0).toUpperCase() + item.day.slice(1)}
               </p>
-              <p className="text-[15px] leading-6 text-textColor font-semibold">
-                {convertTime(item.startingTime)} -{convertTime(item.endingTime)}
+              <p
+                className="text-[15px] leading-6 text-textColor font-semibold cursor-pointer"
+                onClick={() => setSelectedTime(item.startingTime)}
+              >
+                {convertTime(item.startingTime)} -{" "}
+                {convertTime(item.endingTime)}
               </p>
             </li>
           ))}
         </ul>
       </div>
-      <button onClick={bookingHandler} className="btn px-2 w-full rounded-md ">
-        Book Appointement
-      </button>
     </div>
   );
 };

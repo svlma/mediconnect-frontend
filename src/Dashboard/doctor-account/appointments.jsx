@@ -1,5 +1,6 @@
 import React from "react";
 import { formatDate } from "../../../utils/formateDate";
+
 const Appointments = ({ appointments }) => {
   return (
     <table className="w-full text-left text-sm text-gray-500">
@@ -19,6 +20,12 @@ const Appointments = ({ appointments }) => {
           </th>
           <th scope="col" className="px-6 py-3">
             Booked on
+          </th>
+          <th scope="col" className="px-6 py-3">
+            Appointment Date
+          </th>
+          <th scope="col" className="px-6 py-3">
+            Appointment Time
           </th>
         </tr>
       </thead>
@@ -58,6 +65,8 @@ const Appointments = ({ appointments }) => {
             </td>
             <td className="px-6 py-4">{item.ticketPrice}</td>
             <td className="px-6 py-4">{formatDate(item.createdAt)}</td>
+            <td className="px-6 py-4">{formatDate(item.appointmentDate)}</td>
+            <td className="px-6 py-4">{item.appointmentTime}</td>
           </tr>
         ))}
       </tbody>

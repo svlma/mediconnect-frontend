@@ -4,6 +4,7 @@ import uploadImagetoCloudinary from "../../../utils/uploadCloudinary";
 import { BASE_URL } from "./../../config";
 import { toast } from "react-toastify";
 import { AuthContext } from "./../../context/AuthContext";
+
 const Profile = ({ doctorData }) => {
   const { user, token, dispatch } = useContext(AuthContext);
   const [formData, setFormData] = useState({
@@ -19,6 +20,7 @@ const Profile = ({ doctorData }) => {
     timeSlots: user?.timeSlots || [],
     about: user?.about || "",
     photo: user?.photo || null,
+    location: user?.location || "", // Add this line
   });
 
   useEffect(() => {
@@ -35,17 +37,20 @@ const Profile = ({ doctorData }) => {
       timeSlots: doctorData?.timeSlots || [],
       about: doctorData?.about || "",
       photo: doctorData?.photo || null,
+      location: doctorData?.location || "", // Add this line
     });
   }, [doctorData]);
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
   const handleFileInputChange = async (event) => {
     const file = event.target.files[0];
     const data = await uploadImagetoCloudinary(file);
     setFormData({ ...formData, photo: data?.url });
   };
+
   const updateProfileHandler = async (e) => {
     e.preventDefault();
 
@@ -68,7 +73,7 @@ const Profile = ({ doctorData }) => {
       dispatch({
         type: "UPDATE_USER",
         payload: {
-          user: result.data
+          user: result.data,
         },
       });
 
@@ -77,12 +82,14 @@ const Profile = ({ doctorData }) => {
       toast.error(error.message);
     }
   };
+
   const addItem = (key, item) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
       [key]: [...prevFormData[key], item],
     }));
   };
+
   const handleReusableInputChangeFunc = (key, index, event) => {
     const { name, value } = event.target;
     setFormData((prevFormData) => {
@@ -94,10 +101,11 @@ const Profile = ({ doctorData }) => {
       };
     });
   };
+
   const deleteItem = (key, index) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
-      [key]: prevFormData[key].filter((_, i) => i != index),
+      [key]: prevFormData[key].filter((_, i) => i !== index),
     }));
   };
 
@@ -114,12 +122,12 @@ const Profile = ({ doctorData }) => {
   const handleQualificationChange = (event, index) => {
     handleReusableInputChangeFunc("qualifications", index, event);
   };
+
   const deleteQualification = (e, index) => {
     e.preventDefault();
     deleteItem("qualifications", index);
   };
 
-  // reusable input change function
   const addExperience = (e) => {
     e.preventDefault();
     addItem("experiences", {
@@ -133,10 +141,12 @@ const Profile = ({ doctorData }) => {
   const handleExperienceChange = (event, index) => {
     handleReusableInputChangeFunc("experiences", index, event);
   };
+
   const deleteExperience = (e, index) => {
     e.preventDefault();
     deleteItem("experiences", index);
   };
+
   const addTimeSlots = (e) => {
     e.preventDefault();
     addItem("timeSlots", {
@@ -149,6 +159,7 @@ const Profile = ({ doctorData }) => {
   const handleTimeSlotsChange = (event, index) => {
     handleReusableInputChangeFunc("timeSlots", index, event);
   };
+
   const deleteTimeSlots = (e, index) => {
     e.preventDefault();
     deleteItem("timeSlots", index);
@@ -247,6 +258,20 @@ const Profile = ({ doctorData }) => {
                 onChange={handleInputChange}
               />
             </div>
+            <div>
+              {" "}
+              {/* Add this section */}
+              <p className="form__label">Location</p>
+              <input
+                type="text"
+                placeholder="Location"
+                name="location"
+                value={formData.location}
+                className="form__input"
+                onChange={handleInputChange}
+              />
+            </div>{" "}
+            {/* End of new section */}
           </div>
         </div>
         <div className="mb-5">
@@ -311,7 +336,7 @@ const Profile = ({ doctorData }) => {
             onClick={addQualification}
             className="bg-[#000] py-2 px-5 rounded text-white h-fit cursor-pointer"
           >
-            Add Quatlification
+            Add Qualification
           </button>
         </div>
         <div className="mb-5">

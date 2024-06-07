@@ -11,11 +11,18 @@ import MyAccount from "../Dashboard/user-account/MyAccount";
 import Dashboard from "../Dashboard/doctor-account/Dashboard";
 import ProtectedRoute from "./ProtectedRoute";
 import CheckoutSuccess from "../pages/CheckoutSuccess";
+import AdminDashboard from "../admin/AdminDashboard";
+import UserList from "../admin/UserList";
+import DoctorList from "../admin/DoctorList";
+import EditUserForm from "../admin/EditUserForm";
+import EditDoctorForm from "../admin/EditDoctorForm";
+import LocationSearch from "../pages/Doctors/LocationSearch";
+import VideoCall from "../pages/VideoCall";
 const Routers = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/Home" element={<Home />} />
+      <Route path="/home" element={<Home />} />
       <Route path="/doctors" element={<Doctors />} />
       <Route path="/doctors/:id" element={<DoctorDetails />} />
       <Route path="/login" element={<Login />} />
@@ -23,6 +30,9 @@ const Routers = () => {
       <Route path="/contact" element={<Contact />} />
       <Route path="/services" element={<Services />} />
       <Route path="/checkout-success" element={<CheckoutSuccess />} />
+      <Route path="/location-search" element={<LocationSearch />} />{" "}
+      <Route path="/video-call/:roomId" element={<VideoCall />} />
+      {/* Ajout de cette ligne */}
       <Route
         path="/users/profile/me"
         element={
@@ -36,6 +46,62 @@ const Routers = () => {
         element={
           <ProtectedRoute allowedRoles={["doctor"]}>
             <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <AdminDashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/users"
+        element={
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <UserList />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/doctors"
+        element={
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <DoctorList />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/manage-users"
+        element={
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <UserList />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/manage-doctors"
+        element={
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <DoctorList />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/edit-user/:id"
+        element={
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <EditUserForm />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/edit-doctor/:id"
+        element={
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <EditDoctorForm />
           </ProtectedRoute>
         }
       />

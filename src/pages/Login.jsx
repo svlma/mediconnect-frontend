@@ -4,6 +4,8 @@ import { BASE_URL } from "../config";
 import { toast } from "react-toastify";
 import { AuthContext } from "../context/AuthContext.jsx";
 import HashLoader from "react-spinners/HashLoader.js";
+import { Container, Text } from "@chakra-ui/react";
+import logo from "../assets/images/logo_transparent.png";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -47,7 +49,12 @@ const Login = () => {
 
       setLoading(false);
       toast.success(result.message);
-      navigate("/home");
+      //si l'admin qui log in en se dirige directement vers dashboard
+      if (result.data.role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/home");
+      }
     } catch (error) {
       toast.error(error.message);
       setLoading(false);
@@ -56,10 +63,15 @@ const Login = () => {
 
   return (
     <section>
-      <div className="w-full max-w-[570px] mx-auto rounded-lg shadow-md md:p-10">
-        <h3 className="text-headingColor text-[22px] leading-9 font-bold mb-10">
-          Hello! <span className="text-primaryColor">Welcome</span> Back 🎉
-        </h3>
+      <div className="w-full max-w-[570px] mx-auto rounded-lg md:p-10 shadow-[12px_20px_30px_rgba(0,0,0,0.3)]">
+        <Container className="flex flex-col items-center justify-center h-full pb-6">
+          <div className="flex items-center justify-center">
+            <img src={logo} alt="Logo" className="w-12 mr-4 " />
+            <h1 className="text-headingColor text-[40px] leading-9 pr-8 ">
+              Welcome
+            </h1>
+          </div>
+        </Container>
 
         <form className="py-4 md:py-0" onSubmit={submitHandler}>
           <div className="mb-5">
@@ -90,13 +102,18 @@ const Login = () => {
               required
             />
           </div>
-          <div className="mt-7">
+          <div className="mt-7 flex justify-center">
             <button
               type="submit"
-              className="w-full bg-primaryColor text-white text-[18px] leading-[30px] py-4 px-3 
-              rounded-lg hover:bg-primaryDarkColor"
+              className="bg-primaryColor text-white text-[18px] leading-[30px] py-3 hover:bg-primaryDarkColor rounded-[50px] focus:outline-none w-40"
             >
-              {loading ? <HashLoader size={25} color="#fff" /> : "Login"}
+              {loading ? (
+                <HashLoader size={25} color="#fff" />
+              ) : (
+                <Text fontWeight="bold" fontSize={25}>
+                  Login
+                </Text>
+              )}
             </button>
           </div>
 
