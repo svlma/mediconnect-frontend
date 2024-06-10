@@ -33,7 +33,7 @@ const VideoCall = () => {
           sharedLinks: [
             {
               name: "Copy Link",
-              url: `http://localhost:3000/video-call/${roomId}`,
+              url: `localhost:5173/video-call/${roomId}`,
             },
           ],
           scenario: {
