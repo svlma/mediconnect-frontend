@@ -1,7 +1,6 @@
 import React from "react";
 import { Box, Stack } from "@chakra-ui/react";
 import bg from "../assets/images/bg3.jpg";
-import homedoctor2 from "../assets/images/doctor2.jpeg";
 import { Link } from "react-router-dom";
 import { BsArrowRight } from "react-icons/bs";
 import About from "../components/About/About";
@@ -43,6 +42,7 @@ const Home = () => {
           }}
         />
         <Header />
+
         <Stack
           style={{
             paddingTop: 40,

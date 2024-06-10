@@ -3,6 +3,7 @@ import logo from "../../assets/images/logo_transparent.png";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { BiMenu } from "react-icons/bi";
 import { AuthContext } from "../../context/AuthContext";
+import { FaPowerOff } from "react-icons/fa";
 
 const navlinks = [
   {
@@ -96,47 +97,47 @@ const Header = () => {
 
           {/* Navigation Right */}
           <div className="flex items-center gap-4">
-            {role === "admin" && (
-              <div className="flex items-center gap-4">
-                <Link to="/admin">
-                  <button className="bg-primaryColor py-2 px-6 text-white font-[600] h-[44px] flex items-center justify-center rounded-[50px]">
-                    Admin Dashboard
-                  </button>
-                </Link>
-                <button
+            {token && user ? (
+              <>
+                {role === "admin" ? (
+                  <Link to="/admin">
+                    <button className="bg-primaryColor py-2 px-6 text-white font-[600] h-[44px] flex items-center justify-center rounded-[50px]">
+                      Admin Dashboard
+                    </button>
+                  </Link>
+                ) : (
+                  <>
+                    <button
+                      onClick={handleVideoCall}
+                      className="bg-primaryColor py-2 px-6 text-white font-[600] h-[44px] flex items-center justify-center rounded-[50px] video-call-button"
+                    >
+                      Video Call
+                    </button>
+                    <Link
+                      to={`${
+                        role === "doctor"
+                          ? "/doctors/profile/me"
+                          : "/users/profile/me"
+                      }`}
+                    >
+                      <figure className="w-[35px] h-[35px] rounded-full cursor-pointer">
+                        <img
+                          src={user?.photo}
+                          className="w-full rounded-full "
+                          alt=""
+                        />
+                      </figure>
+                    </Link>
+                  </>
+                )}
+                <FaPowerOff
+                  size={24}
                   onClick={handleLogout}
-                  className="bg-red-600 py-2 px-6 text-white font-[600] h-[44px] flex items-center justify-center rounded-[50px]"
-                >
-                  Logout
-                </button>
-              </div>
-            )}
-            {token && user && role !== "admin" && (
-              <div className="flex items-center gap-4">
-                <button
-                  onClick={handleVideoCall}
-                  className="bg-primaryColor py-2 px-6 text-white font-[600] h-[44px] flex items-center justify-center rounded-[50px] video-call-button"
-                >
-                  Video Call
-                </button>
-                <Link
-                  to={`${
-                    role === "doctor"
-                      ? "/doctors/profile/me"
-                      : "/users/profile/me"
-                  }`}
-                >
-                  <figure className="w-[35px] h-[35px] rounded-full cursor-pointer">
-                    <img
-                      src={user?.photo}
-                      className="w-full rounded-full "
-                      alt=""
-                    />
-                  </figure>
-                </Link>
-              </div>
-            )}
-            {!token && (
+                  color="#333"
+                  cursor={"pointer"}
+                />
+              </>
+            ) : (
               <Link to="/login">
                 <button className="bg-primaryColor py-2 px-6 text-white font-[600] h-[44px] flex items-center justify-center rounded-[50px]">
                   Login
